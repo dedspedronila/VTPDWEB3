@@ -1,0 +1,13 @@
+<script>
+    const request = new XMLHttpRequest();
+    request.open("GET", "https://api.restful-api.dev/objects");
+    request.send();
+    request.onload = () => {
+        if (request.status === 200) {
+            const users = JSON.parse(request.responseText);
+            console.log(JSON.stringify(users));
+        } else {
+            console.log("Erro:", request.status);
+        }
+    };
+</script>
