@@ -1,0 +1,119 @@
+//app.js
+
+
+// Importa o framework Express, que facilita criar servidores HTTP em Node.js
+const express = require('express');
+
+// Importa o objeto de rotas definido no arquivo routes/route.js
+const routes = require('./routes/route');
+
+// Cria a instância do aplicativo Express
+const app = express();
+
+// Configura o Express para fazer o parse de JSON no corpo das requisições
+app.use(express.json());
+
+// Registra as rotas do arquivo route.js no aplicativo
+app.use(routes);
+
+// Define a porta onde o servidor vai escutar. Usa a variável de ambiente PORT se existir, senão 4000.
+const port = process.env.PORT || 4000;
+// Inicia o servidor e exibe uma mensagem no console quando estiver rodando
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
+});
+
+
+
+//routes.js
+// Importa o Express para criar um roteador separado
+const express = require('express');
+// Importa as funções da calculadora que realizam as operações aritméticas
+const {
+    somar,
+    subtrair,
+    multiplicar,
+    dividir,
+} = require('../controller/calculadora');
+
+// Cria um roteador Express para definir as rotas da API
+const router = express.Router();
+
+// Função middleware para validar os números enviados no corpo da requisição
+function validateNumbers(req, res, next) {
+    const { num1, num2 } = req.body; // extrai num1 e num2 do corpo da requisição
+    if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+        // Retorna erro se os valores não forem números
+        return res.status(400).json({
+            error: 'num1 e num2 devem ser números',
+        });
+    }
+    next(); // Continua para a próxima função de rota quando válido
+}
+
+// Rota POST /somar que usa o middleware de validação e retorna o resultado da soma
+router.post('/somar', validateNumbers, (req, res) => {
+    const { num1, num2 } = req.body;
+    res.json({ resultado: somar(num1, num2) });
+});
+
+// Rota POST /subtrair que usa o middleware de validação e retorna a diferença
+router.post('/subtrair', validateNumbers, (req, res) => {
+    const { num1, num2 } = req.body;
+    res.json({ resultado: subtrair(num1, num2) });
+});
+
+// Rota POST /multiplicar que usa o middleware de validação e retorna o produto
+router.post('/multiplicar', validateNumbers, (req, res) => {
+    const { num1, num2 } = req.body;
+    res.json({ resultado: multiplicar(num1, num2) });
+});
+
+// Rota POST /dividir que usa o middleware de validação e retorna a divisão
+router.post('/dividir', validateNumbers, (req, res) => {
+    const { num1, num2 } = req.body;
+    if (num2 === 0) {
+        // Retorna erro se tentar dividir por zero
+        return res.status(400).json({ error: 'Divisão por zero não é permitida' });
+    }
+    res.json({ resultado: dividir(num1, num2) });
+});
+
+// Exporta o roteador para o app.js usar
+module.exports = router;
+
+
+
+//controller.js
+
+// Define a função somar que recebe dois números e retorna a soma
+function somar(num1, num2) {
+    return num1 + num2; // realiza a adição dos valores num1 e num2
+}
+
+// Define a função subtrair que recebe dois números e retorna a diferença
+function subtrair(num1, num2) {
+    return num1 - num2; // realiza a subtração num1 - num2
+}
+
+// Define a função multiplicar que recebe dois números e retorna o produto
+function multiplicar(num1, num2) {
+    return num1 * num2; // realiza a multiplicação dos valores
+}
+
+// Define a função dividir que recebe dois números e retorna o resultado da divisão
+function dividir(num1, num2) {
+    // Verifica se o divisor é zero para evitar erro de divisão por zero
+    if (num2 === 0) {
+        throw new Error('Divisão por zero não é permitida');
+    }
+    return num1 / num2; // retorna o resultado da divisão num1 / num2
+}
+
+// Exporta as funções para que o arquivo route.js possa usá-las
+module.exports = {
+    somar,
+    subtrair,
+    multiplicar,
+    dividir,
+};
