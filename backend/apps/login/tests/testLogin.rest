@@ -1,0 +1,17 @@
+### Teste de Login
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+# authorization: Bearer eyJhbGciOiJIUzI1NiI
+
+{
+  "username": "qwe",
+  "password": "qwe"
+}
+
+### Teste de Logout
+POST http://localhost:40000/Logout HTTP/1.1
+content-type: application/json
+
+{
+
+}
