@@ -11,6 +11,8 @@ var nunjucks = require('nunjucks');
 var indexRouter = require('./routes/rtIndex');
 var loginRouter = require('./routes/rtLogin');
 var homeRouter = require('./routes/rtHome');
+var alunosRouter = require('./routes/rtAlunos');
+var cursosRouter = require('./routes/rtCursos');
 
 
 require('dotenv').config({ path: path.join(__dirname, 'frontend.env'), quiet: true });
@@ -18,11 +20,13 @@ require('dotenv').config({ path: path.join(__dirname, 'frontend.env'), quiet: tr
 
 var app = express();
 var viewsPath = path.join(__dirname, 'views');
+var appsPath = path.join(__dirname, 'apps');
+var templatePaths = [viewsPath, appsPath];
 const port = process.env.PORT || 40100;
-app.set('views', viewsPath);
+app.set('views', templatePaths);
 app.set('view engine', 'njk');
 
-nunjucks.configure(viewsPath, {
+nunjucks.configure(templatePaths, {
     autoescape: true,
     express: app,
     noCache: app.get('env') === 'development'
@@ -36,6 +40,8 @@ app.use('/apps', express.static(path.join(__dirname, 'apps')));
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/home', homeRouter);
+app.use('/alunos', alunosRouter);
+app.use('/cursos', cursosRouter);
 
 app.use(function (req, res, next) {
     next(createError(404));

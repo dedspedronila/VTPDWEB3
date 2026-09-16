@@ -1,5 +1,8 @@
 //Arquivo apps/login/vwLogin.js
 document.addEventListener('DOMContentLoaded', function () {
+
+    dw3ClearIsLoggedCookie();
+    
     var form = document.getElementById('loginForm');
     var errorBox = document.getElementById('loginError');
     if (!form) {

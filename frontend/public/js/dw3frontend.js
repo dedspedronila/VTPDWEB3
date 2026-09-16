@@ -1,0 +1,37 @@
+// Arquivo: ./public/js/dw3frontend.js
+function dw3IsLogged() {
+    // Verifica se o Cookie IsLogged existe.
+    const isLogged = document.cookie
+        .split(';')
+        .some((cookie) => cookie.trim().startsWith('IsLogged='));
+    if (!isLogged) {
+        window.location.href = '/login';
+        return false;
+    }
+    return true;
+}
+
+function dw3ClearIsLoggedCookie() {
+    // Limpa o Cookie Islogged
+    var isLogged = document.cookie
+        .split(';')
+        .some((cookie) => cookie.trim().startsWith('IsLogged='));
+    if (isLogged) {
+        document.cookie = 'IsLogged=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    }
+}
+
+function dw3MontarHeadersAutenticacao(headers) { // Função nova
+    var token = localStorage.getItem('token');
+    var finalHeaders = headers || {};
+    if (token) {
+        finalHeaders.Authorization = 'Bearer ' + token;
+    }
+    return finalHeaders;
+}
+function dw3OcultarBotao(id) { // Função nova
+    var botao = document.getElementById(id);
+    if (botao) {
+        botao.classList.add('d-none');
+    }
+}   
