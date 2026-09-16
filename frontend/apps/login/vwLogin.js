@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
     form.addEventListener('submit', async function (event) {
-        event.preventDefault();
+        event.preventDefault(); //não envia a pagina, mantem parado no formulário
+
         var servidorDw3 = form.dataset.servidorDw3; // Valor que vem de routes/rtLogin.js
         var usuario = document.getElementById('usuario').value;
         var senha = document.getElementById('senha').value;
@@ -26,14 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    UserName: usuario,
-                    Password: senha
+                    username: usuario,
+                    password: senha
                 })
             });
             if (!response.ok) {
                 throw new Error('Usuario ou senha inválidos.');
             }
             var data = await response.json();
+            console.log('Resposta do backend:', data); // <-- Adicione esta linha temporariamente
             var token = data.token || data.Token || data.accessToken || data.AccessToken;
             if (!token) {
                 throw new Error('Erro no login. Token não retornado pelo servidor.');
