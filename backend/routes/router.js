@@ -18,6 +18,7 @@ routerApp.get("/", (req, res) => {
 routerApp.get("/getAllAlunos", appAlunos.GetAllAlunos);
 routerApp.get("/getAlunoByID/:alunoid", appLogin.AutenticaJWT, appAlunos.GetAlunoByID);
 routerApp.post("/insertAluno", appLogin.AutenticaJWT, appAlunos.InsertAluno);
+routerApp.get("/getCursosToAlunos", appLogin.AutenticaJWT, appAlunos.GetCursosToAlunos); // Linha adicionada.
 routerApp.put("/updateAluno/:alunoid", appLogin.AutenticaJWT, appAlunos.UpdateAluno);
 routerApp.delete("/deleteAluno/:alunoid", appLogin.AutenticaJWT, appAlunos.DeleteAluno);
 

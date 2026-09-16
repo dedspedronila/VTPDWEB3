@@ -91,9 +91,14 @@ const DeleteAluno = async (alunoIDPar) => {
     }
     return { msg, linhasAfetadas };
 };
+
+const GetCursosToAlunos = async () => {
+    return (await db.query("select cursoid, descricao from cursos")).rows;
+};
 module.exports = {
     GetAllAlunos,
     GetAlunoByID,
+    GetCursosToAlunos,
     InsertAluno,
     UpdateAluno,
     DeleteAluno,
