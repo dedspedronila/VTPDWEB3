@@ -44,7 +44,7 @@ async function carregarCursos(servidorDw3, alertBox) {
 }
 
 function inicializarTabelaCursos(cursos) {
-    new DataTable('#tblCursos', {
+    var tabela = new DataTable('#tblCursos', {
         data: cursos,
         columns: [
             { data: 'cursoid', defaultContent: '' },
@@ -93,6 +93,36 @@ function inicializarTabelaCursos(cursos) {
                 next: 'Proximo',
                 previous: 'Anterior'
             }
+        }
+    });
+
+    var tabelaCursos = document.getElementById('tblCursos');
+    if (!tabelaCursos) {
+        return;
+    }
+
+    tabelaCursos.addEventListener('click', function (event) {
+        var botao = event.target.closest('button[data-action][data-cursoid]');
+
+        if (!botao) {
+            return;
+        }
+
+        var action = botao.dataset.action;
+        var cursoId = botao.dataset.cursoid;
+
+        if (action === 'visualizar') {
+            window.location.href = '/cursos/form?oper=Re&cursoId=' + encodeURIComponent(cursoId);
+            return;
+        }
+
+        if (action === 'atualizar') {
+            window.location.href = '/cursos/form?oper=Up&cursoId=' + encodeURIComponent(cursoId);
+            return;
+        }
+
+        if (action === 'remover') {
+            window.location.href = '/cursos/form?oper=De&cursoId=' + encodeURIComponent(cursoId);
         }
     });
 }
